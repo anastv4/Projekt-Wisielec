@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+
+    <ImageView
+        android:id="@+id/wisielecImg"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/wisilec_0"
+        android:layout_marginBottom="20dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/slowoLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"/>
+
+
+    <TextView
+        android:id="@+id/proby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Życia: 7"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"/>
+
+
+    <TextView
+        android:id="@+id/wynikText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp"
+        android:textColor="#FF0000"
+        android:layout_marginBottom="10dp"/>
+
+
+    <EditText
+        android:id="@+id/inputLitera"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="Podaj literę"
+        android:inputType="text"
+        android:maxLength="1"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"/>
+
+
+    <Button
+        android:id="@+id/sprawdz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sprawdź"
+        android:layout_marginBottom="10dp"/>
+
+
+    <Button
+        android:id="@+id/restartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Graj znowu"/>
+</LinearLayout>
