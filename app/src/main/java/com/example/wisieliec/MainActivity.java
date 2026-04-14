@@ -4,33 +4,34 @@ import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.wisieliec.R;
-
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
+    // tablica haseł do gry
     String[] slowa = {"ANDROID", "JAVA", "KOT", "SZKOLA", "PROGRAM"};
 
-    String slowo;
-    char[] ukryte;
-    int zycia = 7;
+    String slowo;        // aktualne hasło w grze
+    char[] ukryte;       // ukryte litery
+    int zycia = 7;       // liczba prób
 
-    boolean gameOver = false;
+    boolean gameOver = false; // czy gra się skończyła
 
-    ImageView wisielecImg;
-    LinearLayout slowoLayout;
-    TextView textProby;
-    TextView wynikText;
-    EditText input;
-    Button button;
-    Button restartButton;
+    // elementy z XML (UI)
+    ImageView wisielecImg;      // obrazek wisielca
+    LinearLayout slowoLayout;   // układ liter hasła
+    TextView textProby;         // tekst z liczbą żyć
+    TextView wynikText;         // komunikat wygrana/przegrana
+    EditText input;            // pole wpisywania litery
+    Button button;             // przycisk sprawdzania
+    Button restartButton;      // przycisk restartu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // łączenie zmiennych z elementami XML
         wisielecImg = findViewById(R.id.wisielecImg);
         slowoLayout = findViewById(R.id.slowoLayout);
         textProby = findViewById(R.id.proby);
@@ -39,73 +40,86 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.sprawdz);
         restartButton = findViewById(R.id.restartButton);
 
-        startGame();
+        startGame(); // start gry
 
+        // kliknięcie przycisku "sprawdź"
         button.setOnClickListener(v -> {
 
-            if (gameOver) return;
+            if (gameOver) return; // jeśli gra skończona → nic nie rób
 
-            String txt = input.getText().toString().toUpperCase();
-            input.setText("");
+            String txt = input.getText().toString().toUpperCase(); // pobiera literę i zmienia na wielką
+            input.setText(""); // czyści pole
 
-            if (txt.length() == 0) return;
+            if (txt.length() == 0) return; // jeśli nic nie wpisano → stop
 
-            char litera = txt.charAt(0);
-            boolean trafiona = false;
+            char litera = txt.charAt(0); // bierze pierwszą literę
+            boolean trafiona = false; // czy litera jest w haśle
 
+            // sprawdzanie liter w haśle
             for (int i = 0; i < slowo.length(); i++) {
                 if (slowo.charAt(i) == litera) {
-                    ukryte[i] = litera;
+                    ukryte[i] = litera; // odkrywa literę
                     trafiona = true;
                 }
             }
 
+            // jeśli nietrafiona litera
             if (!trafiona) {
-                zycia--;
-                updateWisielec();
+                zycia--; // zmniejsza życie
+                updateWisielec(); // zmienia obrazek wisielca
             }
 
-            updateUI();
-            sprawdzKoniec();
+            updateUI();       // odświeża UI
+            sprawdzKoniec();  // sprawdza czy koniec gry
         });
 
+        // kliknięcie restart
         restartButton.setOnClickListener(v -> {
-            startGame();
-            wynikText.setText("");
-            gameOver = false;
+            startGame();          // nowa gra
+            wynikText.setText(""); // usuwa napis
+            gameOver = false;      // reset stanu gry
         });
     }
 
+    // start nowej gry
     void startGame() {
+
+        // losuje słowo
         slowo = slowa[(int)(Math.random() * slowa.length)];
+
+        // tworzy tablicę ukrytych liter
         ukryte = new char[slowo.length()];
 
-        Arrays.fill(ukryte, '_');
+        Arrays.fill(ukryte, '_'); // wypełnia podkreśleniami
 
-        zycia = 7;
-        gameOver = false;
+        zycia = 7;        // reset żyć
+        gameOver = false; // gra trwa
 
-        updateWisielec();
-        updateUI();
+        updateWisielec(); // aktualizuje obraz
+        updateUI();       // aktualizuje ekran
     }
 
+    // aktualizacja UI (litery + życie)
     void updateUI() {
-        slowoLayout.removeAllViews();
 
+        slowoLayout.removeAllViews(); // usuwa stare litery
+
+        // pokazuje każdą literę jako TextView
         for (int i = 0; i < ukryte.length; i++) {
             TextView tv = new TextView(this);
-            tv.setText(String.valueOf(ukryte[i]));
-            tv.setTextSize(32);
-            tv.setPadding(10, 10, 10, 10);
-            slowoLayout.addView(tv);
+            tv.setText(String.valueOf(ukryte[i])); // pokazuje literę lub _
+            tv.setTextSize(32); // rozmiar tekstu
+            tv.setPadding(10, 10, 10, 10); // odstępy
+            slowoLayout.addView(tv); // dodaje do ekranu
         }
 
-        textProby.setText("Życia: " + zycia);
+        textProby.setText("Życia: " + zycia); // pokazuje życie
     }
 
+    // zmiana obrazka wisielca
     void updateWisielec() {
 
-        if (zycia < 0) zycia = 0;
+        if (zycia < 0) zycia = 0; // nie może być mniej niż 0
 
         switch (zycia) {
             case 7:
@@ -135,13 +149,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // sprawdzenie końca gry
     void sprawdzKoniec() {
 
+        // wygrana (ukryte == slowo)
         if (String.valueOf(ukryte).equals(slowo)) {
             Toast.makeText(this, "Wygrałeś 🎉", Toast.LENGTH_LONG).show();
-            startGame();
+            startGame(); // nowa gra
         }
 
+        // przegrana
         if (zycia <= 0 && !gameOver) {
             gameOver = true;
 
